@@ -4,3 +4,5 @@ cheeto: Hello
 shredder: woof
 shredder: Hello from the other side!
 cheeto: shreddder, you are annoying
+shredder: arhhhhhh
+cheeto: sorryyyy
