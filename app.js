@@ -1,18 +1,21 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require("express");
+const loginRoute = require("./routes/login");
+const chatRoute = require("./routes/chat");
+const path = require("path");
 
 const app = express();
+const PORT = 3000;
 
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use("/login", loginRoute);
+app.use("/chat", chatRoute);
 
-app.use('/admin',  adminRoutes);
-app.use(shopRoutes);
-
-app.use((req, res, next) => {
-    res.status(404).send('<h1>Page not found</h1>');
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "chat.html"));
 });
 
-app.listen(3000);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}/login`);
+});
