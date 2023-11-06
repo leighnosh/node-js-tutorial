@@ -1,21 +1,24 @@
-const express = require("express");
-const loginRoute = require("./routes/login");
-const chatRoute = require("./routes/chat");
-const path = require("path");
+const path = require('path');
+
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const errorController = require('./controllers/error');
 
 const app = express();
-const PORT = 3000;
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-app.use("/login", loginRoute);
-app.use("/chat", chatRoute);
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "chat.html"));
-});
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}/login`);
-});
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+
+app.use(errorController.get404);
+
+app.listen(3000);
